@@ -14,8 +14,8 @@ NODE = os.getenv('NODE')
 NAME_PROXMOX = os.getenv('NAME_PROXMOX')
 NAME_SYS = os.getenv('NAME_SYS')
 
-proxmox = ProxmoxAPI(PROXMOX_HOST, user=PROXMOX_USER, token_name=NAME_PROXMOX, token_value=PROXMOX_TOKEN, verify_ssl=False)
-sys = ProxmoxAPI(PROXMOX_HOST, user=SYS_USER, token_name=NAME_SYS, token_value=SYS, verify_ssl=False)
+proxmox = ProxmoxAPI(host=PROXMOX_HOST, user=PROXMOX_USER, token_name=NAME_PROXMOX, token_value=PROXMOX_TOKEN, verify_ssl=False)
+sys = ProxmoxAPI(host=PROXMOX_HOST, user=SYS_USER, token_name=NAME_SYS, token_value=SYS, verify_ssl=False)
 
 def list_all():
 

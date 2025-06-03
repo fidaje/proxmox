@@ -17,8 +17,7 @@ jobs:
       - name: Extract tag from commit or generate build number
         id: get_tag
         run: |
-          echo "BUILD_TAG=$(date +%Y%m%d%H%M%S)" >> $GITHUB_ENV
-          echo "tag=build-${{ env.BUILD_TAG }}" >> $GITHUB_OUTPUT
+          echo "tag=build-$$(date +%Y%m%d%H%M%S)" >> $GITHUB_OUTPUT
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
