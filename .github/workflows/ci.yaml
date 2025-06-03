@@ -8,8 +8,7 @@ on:
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
-    env:
-      IMAGE_NAME: ${ secrets.DOCKERHUB_REPOSITORY }
+  
 
     steps:
       - name: Checkout repository
@@ -36,5 +35,5 @@ jobs:
           context: .
           push: true
           tags: |
-            ${{ env.IMAGE_NAME }}:${{ steps.get_tag.outputs.tag }}
-            ${{ env.IMAGE_NAME }}:latest
+            ${{ secrets.DOCKERHUB_REPOSITORY }}:${{ steps.get_tag.outputs.tag }}
+            ${{ secrets.DOCKERHUB_REPOSITORY }}:latest
