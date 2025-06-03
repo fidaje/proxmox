@@ -1,0 +1,40 @@
+name: Build and Push Docker Image
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Build Docker image
+        run: docker build -t telegram-bot:latest .
+
+      - name: Save image as tar
+        run: docker save -o telegram-bot.tar telegram-bot:latest
+
+      - name: Transfer image to server
+        uses: appleboy/scp-action@v0.1.4
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          source: telegram-bot.tar
+          target: /tmp/
+
+      - name: Run container on remote server
+        uses: appleboy/ssh-action@v0.1.6
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            docker load -i /tmp/telegram-bot.tar
+            docker stop telegram-bot || true
+            docker rm telegram-bot || true
+            docker run -d --name telegram-bot telegram-bot:latest
