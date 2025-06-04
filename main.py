@@ -49,9 +49,11 @@ async def change_status(update: Update, context: ContextTypes.DEFAULT_TYPE):
         vmid = ' '.join(context.args)
         if not vmid.isdigit():
             await update.message.reply_text("VMID must be a number")
-        if int(vmid) == TELEGRAM_CT:
+        
+        if vmid == TELEGRAM_CT:
             await update.message.reply_text("You cannot change the status of this container.")
             return
+        
         res = proxmox.stop_or_start(int(vmid))
         await update.message.reply_text(f"Changing status of VMID: {vmid}\n{res}")
     else:
