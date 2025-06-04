@@ -12,7 +12,8 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 logger = logging.getLogger(__name__)
 
 TELEGRAM_TOKEN = os.getenv('TELEGRAM_TOKEN')
-AUTHORIZED_USER_ID = int(os.getenv('AUTHORIZED_USER_ID'))  # Assicurati che sia un intero
+AUTHORIZED_USER_ID = int(os.getenv('AUTHORIZED_USER_ID'))
+TELEGRAM_CT = os.getenv('TELEGRAM_CT')
 
 
 def authorized_user(func):
@@ -48,7 +49,9 @@ async def change_status(update: Update, context: ContextTypes.DEFAULT_TYPE):
         vmid = ' '.join(context.args)
         if not vmid.isdigit():
             await update.message.reply_text("VMID must be a number")
-
+        if int(vmid) == TELEGRAM_CT:
+            await update.message.reply_text("You cannot change the status of this container.")
+            return
         res = proxmox.stop_or_start(int(vmid))
         await update.message.reply_text(f"Changing status of VMID: {vmid}\n{res}")
     else:
