@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      IMAGE_NAME: fidaje/proxmox
+      IMAGE_NAME: ${{ secrets.DOCKERHUB_REPOSITORY }}
 
     steps:
       - name: Checkout repository
