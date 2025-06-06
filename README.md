@@ -1,2 +1,2 @@
-# proxmox
-Telegram Bot to manage personal Proxmox server
+# Telegram Bot to manage personal Proxmox server
+
