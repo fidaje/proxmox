@@ -13,8 +13,6 @@ jobs:
       IMAGE_NAME: ${{ secrets.DOCKERHUB_REPOSITORY }}
 
     outputs:
-      image_tag: ${{ steps.tag.outputs.tag }}
-      image_name: ${{ env.IMAGE_NAME }}
       job_status: ${{ job.status }}
 
     steps:
@@ -56,8 +54,6 @@ jobs:
           TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           JOB_STATUS: ${{ needs.build-and-push.result }}
-          IMAGE_TAG: ${{ needs.build-and-push.outputs.image_tag }}
-          IMAGE_NAME: ${{ needs.build-and-push.outputs.image_name }}
         run: |
           if [ "$JOB_STATUS" == "success" ]; then
             MESSAGE="✅ *Build succeeded!*\n\n🖼 New image available\n📦 Pushed to Docker Hub."
