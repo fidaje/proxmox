@@ -52,7 +52,7 @@ jobs:
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: |
           if [ "${{ needs.build-and-push.result }}" == "success" ]; then
-            MESSAGE="✅ *Build succeeded\!*\n\n🖼 New image available\n📦 Pushed to Docker Hub."
+            MESSAGE="✅ *Build succeeded\!*\n\n🖼 New image available\!\n📦 Pushed to Docker Hub\."
           else
             MESSAGE="❌ *Build failed\!*\n\n"
           fi
