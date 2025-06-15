@@ -52,9 +52,9 @@ jobs:
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: |
           if [ "${{ needs.build-and-push.result }}" == "success" ]; then
-            MESSAGE="✅ *Build succeeded\!*\n\n🖼 New image available\!\n📦 Pushed to Docker Hub\."
+             MESSAGE=$(echo -e "✅ *Build succeeded\!*\n\n🖼 New image available\!\n📦 Pushed to Docker Hub\!")
           else
-            MESSAGE="❌ *Build failed\!*\n\n"
+            MESSAGE=$(echo -e "❌ *Build failed\!*\n\n")
           fi
 
           curl -s -X POST "https://api.telegram.org/bot$TELEGRAM_TOKEN/sendMessage" \
