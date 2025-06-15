@@ -60,12 +60,12 @@ jobs:
           IMAGE_NAME: ${{ needs.build-and-push.outputs.image_name }}
         run: |
           if [ "$JOB_STATUS" == "success" ]; then
-            MESSAGE="✅ *Build succeeded!*\n\n🖼 Image: \`$IMAGE_NAME:$IMAGE_TAG\`\n📦 Pushed to Docker Hub."
+            MESSAGE="✅ *Build succeeded!*\n\n🖼 New image available\n📦 Pushed to Docker Hub."
           else
-            MESSAGE="❌ *Build failed!*\n\nRepository: \`${{ github.repository }}\`\nBranch: \`${{ github.ref }}\`"
+            MESSAGE="❌ *Build failed!*\n\n"
           fi
 
           curl -s -X POST "https://api.telegram.org/bot$TELEGRAM_TOKEN/sendMessage" \
             -d chat_id="$TELEGRAM_CHAT_ID" \
             -d text="$MESSAGE" \
-            -d parse_mode="Markdown"
+            -d parse_mode="MarkdownV2"
