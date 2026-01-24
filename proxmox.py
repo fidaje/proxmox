@@ -17,6 +17,14 @@ NAME_SYS = os.getenv('NAME_SYS')
 proxmox = ProxmoxAPI(host=PROXMOX_HOST, user=PROXMOX_USER, token_name=NAME_PROXMOX, token_value=PROXMOX_TOKEN, verify_ssl=False)
 sys = ProxmoxAPI(host=PROXMOX_HOST, user=SYS_USER, token_name=NAME_SYS, token_value=SYS, verify_ssl=False)
 
+
+
+def shutdown_system():
+    proxmox.nodes(NODE).shutdown.post()
+
+    return "Shutting down the Proxmox host system"
+
+
 def list_all():
 
     containers = get_containers(proxmox, NODE)

@@ -72,6 +72,10 @@ async def help(update: Update, context) -> None:
     )
     await update.message.reply_text(help_text)
 
+@authorized_user
+async def shutdown_system(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    res = proxmox.shutdown_system()
+    await update.message.reply_text(res)
 
 def main() -> None:
     
@@ -82,6 +86,7 @@ def main() -> None:
     application.add_handler(CommandHandler("vms", status_vms))
     application.add_handler(CommandHandler("info", summary))
     application.add_handler(CommandHandler("change", change_status))
+    application.add_handler(CommandHandler("shutdown", shutdown_system))
     application.add_handler(CommandHandler("help", help))
     application.add_handler(CommandHandler("start", help))
 
