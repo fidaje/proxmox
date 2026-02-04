@@ -12,13 +12,13 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 logger = logging.getLogger(__name__)
 
 TELEGRAM_TOKEN = os.getenv('TELEGRAM_TOKEN')
-AUTHORIZED_USER_ID = int(os.getenv('AUTHORIZED_USER_ID'))
+AUTHORIZED_USER_IDs = [int(os.getenv('AUTHORIZED_USER_ID')), int(os.getenv('GCC'))]
 TELEGRAM_CT = os.getenv('TELEGRAM_CT')
 
 
 def authorized_user(func):
     async def wrapper(update: Update, context) -> None:
-        if update.message.chat_id == AUTHORIZED_USER_ID:
+        if update.message.chat_id in AUTHORIZED_USER_IDs:
             return await func(update, context)
         else:
             await update.message.reply_text("You are not authorized to use this bot.")
