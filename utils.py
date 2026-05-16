@@ -20,43 +20,25 @@ def get_cpu_usage(proxmox, node):
 
 
 def get_memory_usage(proxmox, node):
-    mem_used = proxmox.nodes(node).status.get()['memory']['used'] / (1024**3)
-    mem_total = proxmox.nodes(node).status.get()['memory']['total'] / (1024**3)
+    memory_info = proxmox.nodes(node).status.get()['memory']
+
+    mem_used = memory_info.get('used', 0) / (1024**3)
+    mem_total = memory_info.get('total', 1) / (1024**3)
 
     return mem_used, mem_total
 
 
-def get_hdd_usage(proxmox):
-    hdd = [disk for disk in proxmox.cluster().resources.get() 
-             if 'plugintype' in disk and disk['plugintype'] == 'zfspool' 
-             and 'storage' in disk and disk['storage'] == 'hdd']
+def get_resource_usage(proxmox, **filters):
+    resources = proxmox.cluster().resources.get()
+    
+    for resource in resources:
 
-    hdd_used = hdd[0]['disk'] / (1024**3)
-    hdd_total = hdd[0]['maxdisk'] / (1024**3)
+        if all(resource.get(k) == v for k, v in filters.items()):
+            used = resource.get('disk', 0) / (1024**3)
+            total = resource.get('maxdisk', 1) / (1024**3)
+            return used, total
 
-    return hdd_used, hdd_total
-
-
-def get_ssd_usage(proxmox):
-    ssd = [disk for disk in proxmox.cluster().resources.get() 
-             if 'plugintype' in disk and disk['plugintype'] == 'zfspool' 
-             and 'storage' in disk and disk['storage'] == 'local-zfs']
-
-    ssd_used = ssd[0]['disk'] / (1024**3)
-    ssd_total = ssd[0]['maxdisk'] / (1024**3)
-
-    return ssd_used, ssd_total
-
-
-def get_node_disk(proxmox, node):
-    node_disk = [disk for disk in proxmox.cluster().resources.get() 
-            if disk['type'] == 'node' and disk['node'] == node]
-
-
-    node_used = node_disk[0]['disk'] / (1024**3)
-    node_total = node_disk[0]['maxdisk'] / (1024**3)
-
-    return node_used, node_total
+    return 0, 1
 
 
 def change_status(proxmox, node, vmid_to_change):

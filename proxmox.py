@@ -13,6 +13,8 @@ SYS_USER = os.getenv('SYS_USER')
 NODE = os.getenv('NODE')
 NAME_PROXMOX = os.getenv('NAME_PROXMOX')
 NAME_SYS = os.getenv('NAME_SYS')
+HDD_STORAGE_NAME = os.getenv('HDD_STORAGE_NAME', 'hdd')
+SSD_STORAGE_NAME = os.getenv('SSD_STORAGE_NAME', 'local-zfs')
 
 proxmox = ProxmoxAPI(host=PROXMOX_HOST, user=PROXMOX_USER, token_name=NAME_PROXMOX, token_value=PROXMOX_TOKEN, verify_ssl=False)
 sys = ProxmoxAPI(host=PROXMOX_HOST, user=SYS_USER, token_name=NAME_SYS, token_value=SYS, verify_ssl=False)
@@ -79,7 +81,7 @@ def get_hdd():
 
     msg = f"HDD usage on {NODE}:\n"
 
-    hdd_used, hdd_total = get_hdd_usage(sys)
+    hdd_used, hdd_total = get_resource_usage(sys, plugintype='zfspool', storage=HDD_STORAGE_NAME)
 
     return f"{msg}💽: {round((hdd_used/hdd_total)*100, 2)}% ({hdd_used:.2f} GB / {hdd_total:.2f} GB)"
 
@@ -87,7 +89,7 @@ def get_ssd():
 
     msg = f"SSD usage on {NODE}:\n"
 
-    ssd_used, ssd_total = get_ssd_usage(sys)
+    ssd_used, ssd_total = get_resource_usage(sys, plugintype='zfspool', storage=SSD_STORAGE_NAME)
 
     return f"{msg}💾: {round((ssd_used/ssd_total)*100, 2)}% ({ssd_used:.2f} GB / {ssd_total:.2f} GB)"
 
@@ -96,9 +98,9 @@ def get_disk_usage():
 
     msg = f"Disk usage on {NODE}:\n"
 
-    hdd_used, hdd_total = get_hdd_usage(sys)
-    ssd_used, ssd_total = get_ssd_usage(sys)
-    node_used, node_total = get_node_disk(sys, NODE)
+    hdd_used, hdd_total = get_resource_usage(sys, plugintype='zfspool', storage=HDD_STORAGE_NAME)
+    ssd_used, ssd_total = get_resource_usage(sys, plugintype='zfspool', storage=SSD_STORAGE_NAME)
+    node_used, node_total = get_resource_usage(sys, plugintype='node', node=NODE)
 
     used = hdd_used + ssd_used + node_used
     total = hdd_total + ssd_total + node_total
