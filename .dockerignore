@@ -1,0 +1,16 @@
+*.env*
+**/__pycache__/**
+
+*venv*
+
+*.DS_Store*
+Icon*
+Dockerfile
+README.md
+.dockerignore
+
+.gitignore
+.github/*
+.git/*
+.vscode/*
+.idea/*
