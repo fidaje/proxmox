@@ -49,6 +49,7 @@ AUTHORIZED_USER_ID
 AUTHORIZED_USER_ID_2
 AUTHORIZED_USER_ID_3
 ...
+```
 
 Only authorized users can execute commands.
 
@@ -56,7 +57,6 @@ You can also protect a specific container (for example the one running the bot i
 
 ```env
 TELEGRAM_CT=100
-
 ```
 
 This prevents accidental shutdown of the bot container.
