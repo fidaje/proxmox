@@ -22,7 +22,7 @@ sys = ProxmoxAPI(host=PROXMOX_HOST, user=SYS_USER, token_name=NAME_SYS, token_va
 
 
 def shutdown_system():
-    proxmox.nodes(NODE).shutdown.post()
+    proxmox.nodes(NODE).status.post(command='shutdown')
 
     return "Shutting down the Proxmox host system"
 
